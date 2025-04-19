@@ -21,16 +21,4 @@ public class ImportResponseDTO {
     private Integer failedRecords;
     private List<ImportRecordStatus> recordStatuses;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ImportRecordStatus {
-        private Integer rowNumber;
-        private String staffCode;
-        private String name;
-        private String accountFpt;
-        private String accountFe;
-        private Boolean success;
-        private String errorMessage;
-    }
 }

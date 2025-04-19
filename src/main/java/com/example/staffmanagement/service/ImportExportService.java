@@ -1,8 +1,8 @@
 package com.example.staffmanagement.service;
 
 
+import com.example.staffmanagement.DTO.ImportRecordStatus;
 import com.example.staffmanagement.DTO.ImportResponseDTO;
-import com.example.staffmanagement.DTO.StaffDTO;
 import com.example.staffmanagement.entity.ImportHistory;
 import com.example.staffmanagement.entity.Staff;
 import com.example.staffmanagement.repository.ImportHistoryRepository;
@@ -68,7 +68,7 @@ public class ImportExportService {
 
     @Transactional
     public ImportResponseDTO importStaff(MultipartFile file) throws IOException {
-        List<ImportResponseDTO.ImportRecordStatus> recordStatuses = new ArrayList<>();
+        List<ImportRecordStatus> recordStatuses = new ArrayList<>();
         int totalRecords = 0;
         int successfulRecords = 0;
         int failedRecords = 0;
@@ -82,7 +82,7 @@ public class ImportExportService {
                 if (row == null) continue;
 
                 totalRecords++;
-                ImportResponseDTO.ImportRecordStatus recordStatus = new ImportResponseDTO.ImportRecordStatus();
+                ImportRecordStatus recordStatus = new ImportRecordStatus();
                 recordStatus.setRowNumber(i + 1);
 
                 try {
@@ -165,7 +165,7 @@ public class ImportExportService {
         dto.setTotalRecords(importHistory.getTotalRecords());
         dto.setSuccessfulRecords(importHistory.getSuccessfulRecords());
         dto.setFailedRecords(importHistory.getFailedRecords());
-        List<ImportResponseDTO.ImportRecordStatus> recordStatuses = new ArrayList<>();
+        List<ImportRecordStatus> recordStatuses = new ArrayList<>();
         dto.setRecordStatuses(recordStatuses);
 
         return dto;
@@ -188,7 +188,7 @@ public class ImportExportService {
         }
     }
 
-    private void validateImportData(ImportResponseDTO.ImportRecordStatus record) {
+    private void validateImportData(ImportRecordStatus record) {
         // Check empty fields
         if (isNullOrEmpty(record.getStaffCode())) {
             throw new RuntimeException("Mã nhân viên không được để trống");
