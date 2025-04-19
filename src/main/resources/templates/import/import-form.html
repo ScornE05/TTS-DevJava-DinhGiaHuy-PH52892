@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{layout :: title(~{::title})}">
+        <title>Import nhân viên - Hệ thống Quản lý Nhân viên FPT</title>
+    </th:block>
+</head>
+<body>
+<th:block th:replace="~{layout :: content(~{::main})}">
+    <main>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Import nhân viên</h2>
+            <a th:href="@{/import-export}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Upload file Excel</h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Vui lòng sử dụng file Excel theo đúng định dạng template.
+                    Nếu chưa có template, bạn có thể
+                    <a th:href="@{/import-export/template}" class="alert-link">tải xuống ở đây</a>.
+                </div>
+
+                <form th:action="@{/import-export/import}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label required-field">Chọn file Excel</label>
+                        <input type="file" class="form-control" id="file" name="file" required
+                               accept=".xlsx,.xls">
+                        <div class="form-text">Chỉ chấp nhận file Excel (.xlsx, .xls)</div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload"></i> Upload và Import
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">Lưu ý khi import</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>Email FPT phải kết thúc bằng đuôi <strong>@fpt.edu.vn</strong></li>
+                    <li>Email FE phải kết thúc bằng đuôi <strong>@fe.edu.vn</strong></li>
+                    <li>Mã nhân viên, email FPT và email FE không được trùng với dữ liệu đã có</li>
+                    <li>Tất cả trường bắt buộc phải nhập đầy đủ</li>
+                    <li>Độ dài thông tin nằm trong giới hạn:</li>
+                    <ul>
+                        <li>Mã nhân viên: tối đa 15 ký tự</li>
+                        <li>Họ tên: tối đa 100 ký tự</li>
+                        <li>Email: tối đa 100 ký tự</li>
+                    </ul>
+                    <li>Email không được chứa khoảng trắng và không có tiếng Việt</li>
+                    <li>Email FPT và email FE phải chứa mã nhân viên</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+</th:block>
+</body>
+</html>

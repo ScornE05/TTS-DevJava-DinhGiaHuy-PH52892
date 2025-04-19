@@ -4,22 +4,31 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
-
+import jakarta.persistence.*;
 import java.util.UUID;
 
+@MappedSuperclass
 @Getter
 @Setter
 public abstract class BaseEntity {
 
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
+    @Column(name = "status")
     private Byte status;
 
+    @Column(name = "created_date")
     private Long createdDate;
 
+    @Column(name = "last_modified_date")
     private Long lastModifiedDate;
 
-    public void initializeEntity() {
+    @PrePersist
+    protected void onCreate() {
         createdDate = System.currentTimeMillis();
         lastModifiedDate = System.currentTimeMillis();
         if (status == null) {
@@ -27,7 +36,8 @@ public abstract class BaseEntity {
         }
     }
 
-    public void updateEntity() {
+    @PreUpdate
+    protected void onUpdate() {
         lastModifiedDate = System.currentTimeMillis();
     }
 }

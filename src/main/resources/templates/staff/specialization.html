@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{layout :: title(~{::title})}">
+        <title>Quản lý bộ môn chuyên ngành - Hệ thống Quản lý Nhân viên FPT</title>
+    </th:block>
+</head>
+<body>
+<th:block th:replace="~{layout :: content(~{::main})}">
+    <main>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Quản lý bộ môn chuyên ngành</h2>
+            <a th:href="@{/staff}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại danh sách nhân viên
+            </a>
+        </div>
+
+        <!-- Thông tin nhân viên -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Thông tin nhân viên</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Mã nhân viên:</strong> <span th:text="${staff.staffCode}">ST001</span></p>
+                        <p><strong>Họ tên:</strong> <span th:text="${staff.name}">Nguyễn Văn A</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Email FPT:</strong> <span th:text="${staff.accountFpt}">anv@fpt.edu.vn</span></p>
+                        <p><strong>Email FE:</strong> <span th:text="${staff.accountFe}">anv@fe.edu.vn</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bộ môn chuyên ngành hiện tại -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Bộ môn chuyên ngành hiện tại</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Cơ sở</th>
+                            <th>Bộ môn</th>
+                            <th>Chuyên ngành</th>
+                            <th>Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${specializations.empty}">
+                            <td colspan="5" class="text-center">Chưa có bộ môn chuyên ngành nào</td>
+                        </tr>
+                        <tr th:each="spec, iter : ${specializations}">
+                            <td th:text="${iter.count}">1</td>
+                            <td th:text="${spec.facilityName}">HN</td>
+                            <td th:text="${spec.departmentName}">Department One</td>
+                            <td th:text="${spec.majorName}">Major One</td>
+                            <td>
+                                <a th:href="@{/staff/specialization/delete/{staffId}/{id}(staffId=${staff.id},id=${spec.id})}"
+                                   class="btn btn-sm btn-danger"
+                                   onclick="return confirm('Bạn có chắc muốn xóa bộ môn chuyên ngành này?')">
+                                    <i class="fas fa-trash"></i> Xóa
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thêm bộ môn chuyên ngành mới -->
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Thêm bộ môn chuyên ngành mới</h5>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/staff/specialization/add}" method="post" th:object="${specializationDTO}">
+                    <input type="hidden" th:field="*{staffId}" th:value="${staff.id}">
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="facilityId" class="form-label required-field">Cơ sở</label>
+                            <select class="form-select" id="facilityId" th:field="*{facilityId}" required>
+                                <option value="">-- Chọn cơ sở --</option>
+                                <option th:each="facility : ${facilities}"
+                                        th:value="${facility.id}"
+                                        th:text="${facility.name}">HN</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="departmentId" class="form-label required-field">Bộ môn</label>
+                            <select class="form-select" id="departmentId" th:field="*{departmentId}" required disabled>
+                                <option value="">-- Chọn bộ môn --</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="majorId" class="form-label required-field">Chuyên ngành</label>
+                            <select class="form-select" id="majorId" th:field="*{majorId}" required disabled>
+                                <option value="">-- Chọn chuyên ngành --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success" id="btnSubmit" disabled>
+                        <i class="fas fa-plus"></i> Thêm bộ môn chuyên ngành
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+</th:block>
+
+<!-- JavaScript cho quản lý bộ môn chuyên ngành -->
+<th:block th:replace="~{layout :: js(~{::script})}">
+    <script>
+        $(document).ready(function() {
+            // Khi chọn cơ sở, load danh sách bộ môn
+            $('#facilityId').change(function() {
+                var facilityId = $(this).val();
+                if (facilityId) {
+                    // Reset các select box phụ thuộc
+                    $('#departmentId').empty().append('<option value="">-- Chọn bộ môn --</option>').prop('disabled', true);
+                    $('#majorId').empty().append('<option value="">-- Chọn chuyên ngành --</option>').prop('disabled', true);
+                    $('#btnSubmit').prop('disabled', true);
+
+                    // Load danh sách bộ môn theo cơ sở
+                    $.getJSON('[[@{/departments/facility/}]]' + facilityId, function(data) {
+                        if (data && data.length > 0) {
+                            $.each(data, function(index, department) {
+                                $('#departmentId').append('<option value="' + department.id + '">' + department.name + '</option>');
+                            });
+                            $('#departmentId').prop('disabled', false);
+                        }
+                    });
+                } else {
+                    $('#departmentId').empty().append('<option value="">-- Chọn bộ môn --</option>').prop('disabled', true);
+                    $('#majorId').empty().append('<option value="">-- Chọn chuyên ngành --</option>').prop('disabled', true);
+                    $('#btnSubmit').prop('disabled', true);
+                }
+            });
+
+            // Khi chọn bộ môn, load danh sách chuyên ngành
+            $('#departmentId').change(function() {
+                var departmentId = $(this).val();
+                var facilityId = $('#facilityId').val();
+
+                if (departmentId && facilityId) {
+                    // Reset chuyên ngành
+                    $('#majorId').empty().append('<option value="">-- Chọn chuyên ngành --</option>').prop('disabled', true);
+                    $('#btnSubmit').prop('disabled', true);
+
+                    // Load danh sách chuyên ngành theo bộ môn và cơ sở
+                    $.getJSON('[[@{/majors/department/}]]' + departmentId + '/facility/' + facilityId, function(data) {
+                        if (data && data.length > 0) {
+                            $.each(data, function(index, major) {
+                                $('#majorId').append('<option value="' + major.id + '">' + major.name + '</option>');
+                            });
+                            $('#majorId').prop('disabled', false);
+                        }
+                    });
+                } else {
+                    $('#majorId').empty().append('<option value="">-- Chọn chuyên ngành --</option>').prop('disabled', true);
+                    $('#btnSubmit').prop('disabled', true);
+                }
+            });
+
+            // Khi chọn chuyên ngành, enable nút submit
+            $('#majorId').change(function() {
+                var majorId = $(this).val();
+                $('#btnSubmit').prop('disabled', !majorId);
+            });
+        });
+    </script>
+</th:block>
+</body>
+</html>

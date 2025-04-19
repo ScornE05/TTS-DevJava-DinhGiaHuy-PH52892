@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{layout :: title(~{::title})}">
+        <title>Import/Export - Hệ thống Quản lý Nhân viên FPT</title>
+    </th:block>
+</head>
+<body>
+<th:block th:replace="~{layout :: content(~{::main})}">
+    <main>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Import/Export Dữ liệu</h2>
+        </div>
+
+        <div class="row">
+            <!-- Import nhân viên -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Import nhân viên</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Nhập dữ liệu nhân viên từ file Excel</p>
+                        <p>Tính năng này cho phép bạn import thông tin nhân viên hàng loạt từ file Excel với định dạng được cung cấp.</p>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a th:href="@{/import-export/import}" class="btn btn-primary">
+                                <i class="fas fa-file-import"></i> Import nhân viên
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Download template -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Download template</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Tải xuống template Excel để nhập dữ liệu nhân viên</p>
+                        <p>Để import dữ liệu thành công, vui lòng sử dụng file template chính xác.
+                            Template bao gồm các trường thông tin cần thiết và ví dụ mẫu.</p>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a th:href="@{/import-export/template}" class="btn btn-success">
+                                <i class="fas fa-file-download"></i> Tải template
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lịch sử import -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Lịch sử import</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Xem lịch sử các lần import dữ liệu</p>
+                        <p>Kiểm tra kết quả của các lần import trước đó, bao gồm thông tin về các bản ghi thành công và thất bại.</p>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a th:href="@{/import-export/history}" class="btn btn-info">
+                                <i class="fas fa-history"></i> Xem lịch sử
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</th:block>
+</body>
+</html>

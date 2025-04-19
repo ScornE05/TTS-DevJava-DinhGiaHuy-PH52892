@@ -1,0 +1,87 @@
+/* Custom styles for Staff Management System */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+}
+
+/* Card styling */
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: all 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Table styling */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table th {
+    background-color: #f8f9fa;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Status badges */
+.badge-active {
+    background-color: #28a745;
+}
+
+.badge-inactive {
+    background-color: #dc3545;
+}
+
+/* Form styling */
+.required-field:after {
+    content: "*";
+    color: red;
+    margin-left: 3px;
+}
+
+/* Custom button styling */
+.btn-group-sm > .btn, .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.76563rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+/* Custom panel for specialization management */
+.specialization-panel {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Import history */
+.import-record {
+    border-left: 4px solid #6c757d;
+    padding-left: 1rem;
+}
+
+.import-record.success {
+    border-left-color: #28a745;
+}
+
+.import-record.failed {
+    border-left-color: #dc3545;
+}
+
+/* Spinner for AJAX requests */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.2em;
+}

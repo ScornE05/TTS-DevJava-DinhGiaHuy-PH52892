@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{layout :: title(~{::title})}">
+        <title>Chi tiết lịch sử import - Hệ thống Quản lý Nhân viên FPT</title>
+    </th:block>
+</head>
+<body>
+<th:block th:replace="~{layout :: content(~{::main})}">
+    <main>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Chi tiết lịch sử import</h2>
+            <a th:href="@{/import-export/history}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại danh sách
+            </a>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Thông tin import</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Tên file:</strong> <span th:text="${history.fileName}">staff_import.xlsx</span></p>
+                        <p><strong>Thời gian import:</strong> <span th:text="${#temporals.format(history.importDate, 'dd/MM/yyyy HH:mm:ss')}">01/01/2023 10:30:45</span></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Tổng số bản ghi:</strong> <span th:text="${history.totalRecords}">10</span></p>
+                        <p><strong>Kết quả:</strong>
+                            <span class="text-success" th:text="${history.successfulRecords}">8</span> thành công,
+                            <span class="text-danger" th:text="${history.failedRecords}">2</span> thất bại
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Biểu đồ kết quả -->
+                <div class="mt-4">
+                    <h6>Tỷ lệ thành công:</h6>
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar bg-success" role="progressbar"
+                             th:style="'width: ' + ${(history.successfulRecords * 100) / history.totalRecords} + '%'"
+                             th:text="${history.successfulRecords} + ' (' + ${#numbers.formatDecimal((history.successfulRecords * 100) / history.totalRecords, 1, 2)} + '%)'">
+                            8 (80%)
+                        </div>
+                        <div class="progress-bar bg-danger" role="progressbar"
+                             th:style="'width: ' + ${(history.failedRecords * 100) / history.totalRecords} + '%'"
+                             th:text="${history.failedRecords} + ' (' + ${#numbers.formatDecimal((history.failedRecords * 100) / history.totalRecords, 1, 2)} + '%)'">
+                            2 (20%)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chi tiết từng bản ghi -->
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Chi tiết bản ghi</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>Dòng</th>
+                            <th>Mã NV</th>
+                            <th>Họ tên</th>
+                            <th>Email FPT</th>
+                            <th>Email FE</th>
+                            <th>Trạng thái</th>
+                            <th>Chi tiết lỗi</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${history.recordStatuses.empty}">
+                            <td colspan="7" class="text-center">Không có dữ liệu chi tiết</td>
+                        </tr>
+                        <tr th:each="record : ${history.recordStatuses}"
+                            th:class="${record.success ? 'table-success' : 'table-danger'}">
+                            <td th:text="${record.rowNumber}">2</td>
+                            <td th:text="${record.staffCode}">ST001</td>
+                            <td th:text="${record.name}">Nguyễn Văn A</td>
+                            <td th:text="${record.accountFpt}">anv@fpt.edu.vn</td>
+                            <td th:text="${record.accountFe}">anv@fe.edu.vn</td>
+                            <td>
+                                <span th:if="${record.success}" class="badge bg-success">Thành công</span>
+                                <span th:unless="${record.success}" class="badge bg-danger">Lỗi</span>
+                            </td>
+                            <td th:text="${record.errorMessage}">Email không đúng định dạng</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</th:block>
+</body>
+</html>

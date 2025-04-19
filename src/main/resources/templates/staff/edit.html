@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{layout :: title(~{::title})}">
+        <title>Sửa nhân viên - Hệ thống Quản lý Nhân viên FPT</title>
+    </th:block>
+</head>
+<body>
+<th:block th:replace="~{layout :: content(~{::main})}">
+    <main>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Sửa thông tin nhân viên</h2>
+            <a th:href="@{/staff}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Quay lại
+            </a>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <form th:action="@{/staff/edit/{id}(id=${staff.id})}" th:object="${staff}" method="post">
+                    <input type="hidden" th:field="*{id}">
+
+                    <!-- Thông báo lỗi -->
+                    <div th:if="${error}" class="alert alert-danger">
+                        <span th:text="${error}">Đã xảy ra lỗi</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="staffCode" class="form-label required-field">Mã nhân viên</label>
+                        <input type="text" class="form-control" id="staffCode" th:field="*{staffCode}"
+                               th:classappend="${#fields.hasErrors('staffCode')} ? 'is-invalid' : ''"
+                               placeholder="Nhập mã nhân viên">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('staffCode')}" th:errors="*{staffCode}">
+                            Mã nhân viên không hợp lệ
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label required-field">Họ và tên</label>
+                        <input type="text" class="form-control" id="name" th:field="*{name}"
+                               th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                               placeholder="Nhập họ và tên">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                            Tên không hợp lệ
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="accountFpt" class="form-label required-field">Email FPT</label>
+                        <input type="email" class="form-control" id="accountFpt" th:field="*{accountFpt}"
+                               th:classappend="${#fields.hasErrors('accountFpt')} ? 'is-invalid' : ''"
+                               placeholder="Nhập email FPT (xxx@fpt.edu.vn)">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('accountFpt')}" th:errors="*{accountFpt}">
+                            Email FPT không hợp lệ
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="accountFe" class="form-label required-field">Email FE</label>
+                        <input type="email" class="form-control" id="accountFe" th:field="*{accountFe}"
+                               th:classappend="${#fields.hasErrors('accountFe')} ? 'is-invalid' : ''"
+                               placeholder="Nhập email FE (xxx@fe.edu.vn)">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('accountFe')}" th:errors="*{accountFe}">
+                            Email FE không hợp lệ
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Trạng thái</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="statusActive" th:field="*{status}" th:value="1">
+                            <label class="form-check-label" for="statusActive">
+                                Đang hoạt động
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="statusInactive" th:field="*{status}" th:value="0">
+                            <label class="form-check-label" for="statusInactive">
+                                Ngừng hoạt động
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Lưu thay đổi
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+</th:block>
+</body>
+</html>

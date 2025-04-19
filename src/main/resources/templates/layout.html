@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:replace="${title}">Hệ thống Quản lý Nhân viên FPT</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/css/bootstrap.min.css}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.4.0/css/all.min.css}">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <!-- CSS thêm vào từ các trang con -->
+    <th:block th:replace="${css} ?: ~{}"></th:block>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">
+            <i class="fas fa-users-cog"></i> Quản lý Nhân viên FPT
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/staff}" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/staff') ? 'active' : ''}">
+                        <i class="fas fa-user"></i> Nhân viên
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/import-export}" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/import-export') ? 'active' : ''}">
+                        <i class="fas fa-file-import"></i> Import/Export
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-4">
+    <!-- Hiển thị thông báo thành công -->
+    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${param.success}">Thao tác thành công!</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Hiển thị thông báo lỗi -->
+    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${param.error}">Đã xảy ra lỗi!</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Thông báo flash -->
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${success}">Thao tác thành công!</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${error}">Đã xảy ra lỗi!</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Nội dung chính -->
+    <th:block th:replace="${content}"></th:block>
+</div>
+
+<!-- Footer -->
+<footer class="bg-light text-center text-muted py-3 mt-5">
+    <div class="container">
+        <p class="mb-0">&copy; 2025 FPT Education. Hệ thống Quản lý Nhân viên</p>
+    </div>
+</footer>
+
+<!-- JavaScript Libraries -->
+<script th:src="@{/webjars/jquery/3.6.4/jquery.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.3.0/js/bootstrap.bundle.min.js}"></script>
+
+<!-- JavaScript thêm vào từ các trang con -->
+<th:block th:replace="${js} ?: ~{}"></th:block>
+</body>
+</html>
