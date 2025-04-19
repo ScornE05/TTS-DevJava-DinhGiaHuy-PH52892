@@ -1,10 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:replace="~{layout :: title(~{::title})}">
+        <title>Danh sách nhân viên - Hệ thống Quản lý Nhân viên FPT</title>
+    </th:block>
 </head>
 <body>
+<th:block th:replace="~{layout :: content(~{::main})}">
+    <main>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Danh sách nhân viên</h2>
+            <a th:href="@{/staff/add}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Thêm nhân viên mới
+            </a>
+        </div>
 
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Mã NV</th>
+                            <th>Họ tên</th>
+                            <th>Email FPT</th>
+                            <th>Email FE</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${staffList.empty}">
+                            <td colspan="7" class="text-center">Chưa có nhân viên nào</td>
+                        </tr>
+                        <tr th:each="staff, iter : ${staffList}">
+                            <td th:text="${iter.count}">1</td>
+                            <td th:text="${staff.staffCode}">NV001</td>
+                            <td th:text="${staff.name}">Nguyễn Văn A</td>
+                            <td th:text="${staff.accountFpt}">anv@fpt.edu.vn</td>
+                            <td th:text="${staff.accountFe}">anv@fe.edu.vn</td>
+                            <td>
+                                <span th:if="${staff.status == 1}" class="badge bg-success">Hoạt động</span>
+                                <span th:if="${staff.status == 0}" class="badge bg-danger">Không hoạt động</span>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a th:href="@{/staff/edit/{id}(id=${staff.id})}" class="btn btn-primary">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a th:href="@{/staff/toggle/{id}(id=${staff.id})}" class="btn btn-warning">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </a>
+                                    <a th:href="@{/staff/specialization/{id}(id=${staff.id})}" class="btn btn-info">
+                                        <i class="fas fa-book"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+</th:block>
 </body>
 </html>
