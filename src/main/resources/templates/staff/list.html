@@ -9,32 +9,35 @@
 <th:block th:replace="~{layout :: content(~{::main})}">
     <main>
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="fas fa-users"></i> Danh sách nhân viên</h2>
+            <h2 class="display-6"><i class="fas fa-users text-primary"></i> Danh sách nhân viên</h2>
             <div>
                 <a th:href="@{/staff/add}" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> Thêm nhân viên mới
+                    <i class="fas fa-plus-circle me-1"></i> Thêm nhân viên mới
                 </a>
                 <a th:href="@{/import-export}" class="btn btn-success ms-2">
-                    <i class="fas fa-file-import"></i> Import/Export
+                    <i class="fas fa-file-import me-1"></i> Import/Export
                 </a>
             </div>
         </div>
 
-        <div class="card mb-4">
+        <div class="card mb-4 border-0 shadow-sm">
             <div class="card-header bg-info text-white">
-                <h5 class="mb-0"><i class="fas fa-filter"></i> Bộ lọc</h5>
+                <h5 class="mb-0"><i class="fas fa-filter me-2"></i> Bộ lọc</h5>
             </div>
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4 mb-2">
+                <div class="row g-3">
+                    <div class="col-md-5 col-lg-4">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm...">
+                            <span class="input-group-text bg-primary text-white">
+                                <i class="fas fa-search"></i>
+                            </span>
+                            <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm theo mã, tên, email...">
                             <button class="btn btn-outline-secondary" type="button" id="clearSearch">
                                 <i class="fas fa-times"></i>
                             </button>
                         </div>
                     </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-4 col-lg-3">
                         <select class="form-select" id="statusFilter">
                             <option value="all">Tất cả trạng thái</option>
                             <option value="active">Đang hoạt động</option>
@@ -45,49 +48,66 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card border-0 shadow">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0"><i class="fas fa-list"></i> Danh sách nhân viên</h5>
+                <h5 class="mb-0"><i class="fas fa-list me-2"></i> Danh sách nhân viên</h5>
                 <span class="badge bg-light text-dark" id="totalRecords" th:text="${staffList.size()} + ' nhân viên'">0 nhân viên</span>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover" id="staffTable">
+                    <table class="table table-hover mb-0" id="staffTable">
                         <thead class="table-light">
                         <tr>
-                            <th>#</th>
+                            <th class="text-center">#</th>
                             <th>Mã NV</th>
                             <th>Họ tên</th>
                             <th>Email FPT</th>
                             <th>Email FE</th>
-                            <th>Trạng thái</th>
-                            <th>Thao tác</th>
+                            <th class="text-center">Trạng thái</th>
+                            <th class="text-center">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:if="${staffList.empty}">
-                            <td colspan="7" class="text-center">Chưa có nhân viên nào</td>
+                            <td colspan="7" class="text-center py-4">
+                                <div class="text-muted">
+                                    <i class="fas fa-info-circle me-2"></i>Chưa có nhân viên nào
+                                </div>
+                            </td>
                         </tr>
                         <tr th:each="staff, iter : ${staffList}">
-                            <td th:text="${iter.count}">1</td>
-                            <td th:text="${staff.staffCode}">NV001</td>
-                            <td th:text="${staff.name}">Nguyễn Văn A</td>
-                            <td th:text="${staff.accountFpt}">anv@fpt.edu.vn</td>
-                            <td th:text="${staff.accountFe}">anv@fe.edu.vn</td>
+                            <td class="text-center" th:text="${iter.count}">1</td>
                             <td>
-                                <span th:if="${staff.status == 1}" class="badge bg-success">Hoạt động</span>
-                                <span th:if="${staff.status == 0}" class="badge bg-danger">Không hoạt động</span>
+                                <span class="fw-bold" th:text="${staff.staffCode}">NV001</span>
+                            </td>
+                            <td th:text="${staff.name}">Nguyễn Văn A</td>
+                            <td>
+                                <a href="#" th:href="'mailto:' + ${staff.accountFpt}" th:text="${staff.accountFpt}">anv@fpt.edu.vn</a>
                             </td>
                             <td>
+                                <a href="#" th:href="'mailto:' + ${staff.accountFe}" th:text="${staff.accountFe}">anv@fe.edu.vn</a>
+                            </td>
+                            <td class="text-center">
+                                <span th:if="${staff.status == 1}" class="badge bg-success">
+                                    <i class="fas fa-check-circle me-1"></i>Hoạt động
+                                </span>
+                                <span th:if="${staff.status == 0}" class="badge bg-danger">
+                                    <i class="fas fa-times-circle me-1"></i>Không hoạt động
+                                </span>
+                            </td>
+                            <td class="text-center">
                                 <div class="btn-group btn-group-sm">
-                                    <a th:href="@{/staff/edit/{id}(id=${staff.id})}" class="btn btn-primary" title="Sửa">
+                                    <a th:href="@{/staff/edit/{id}(id=${staff.id})}" class="btn btn-primary"
+                                       data-bs-toggle="tooltip" title="Sửa thông tin">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a th:href="@{/staff/toggle/{id}(id=${staff.id})}" class="btn btn-warning" title="Đổi trạng thái"
-                                       onclick="return confirm('Bạn có chắc muốn thay đổi trạng thái nhân viên này?')">
+                                    <a th:href="@{/staff/toggle/{id}(id=${staff.id})}" class="btn btn-warning"
+                                       data-bs-toggle="tooltip" title="Đổi trạng thái"
+                                       data-confirm="Bạn có chắc muốn thay đổi trạng thái nhân viên này?">
                                         <i class="fas fa-sync-alt"></i>
                                     </a>
-                                    <a th:href="@{/staff/specialization/{id}(id=${staff.id})}" class="btn btn-info" title="Quản lý bộ môn chuyên ngành">
+                                    <a th:href="@{/staff/specialization/{id}(id=${staff.id})}" class="btn btn-info"
+                                       data-bs-toggle="tooltip" title="Quản lý bộ môn chuyên ngành">
                                         <i class="fas fa-book"></i>
                                     </a>
                                 </div>
@@ -96,6 +116,21 @@
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class="card-footer bg-white">
+                <nav aria-label="Page navigation" th:if="${staffList != null && staffList.size() > 10}">
+                    <ul class="pagination justify-content-center mb-0">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Trước</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Sau</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </main>
@@ -136,11 +171,15 @@
 
                 $('#staffTable tbody tr').each(function() {
                     var row = $(this);
+
+                    // Bỏ qua dòng "không có dữ liệu"
+                    if (row.find('td').length === 1) return;
+
                     var staffCode = row.find('td:eq(1)').text().toLowerCase();
                     var name = row.find('td:eq(2)').text().toLowerCase();
                     var emailFpt = row.find('td:eq(3)').text().toLowerCase();
                     var emailFe = row.find('td:eq(4)').text().toLowerCase();
-                    var status = row.find('td:eq(5) span').text().toLowerCase();
+                    var status = row.find('td:eq(5)').text().toLowerCase();
 
                     var matchSearch = staffCode.includes(searchValue) ||
                         name.includes(searchValue) ||
@@ -148,9 +187,9 @@
                         emailFe.includes(searchValue);
 
                     var matchStatus = true;
-                    if (statusFilter === 'active' && status !== 'hoạt động') {
+                    if (statusFilter === 'active' && !status.includes('hoạt động')) {
                         matchStatus = false;
-                    } else if (statusFilter === 'inactive' && status !== 'không hoạt động') {
+                    } else if (statusFilter === 'inactive' && !status.includes('không hoạt động')) {
                         matchStatus = false;
                     }
 
@@ -166,14 +205,28 @@
                 $('#totalRecords').text(visibleRows + ' nhân viên');
 
                 // Hiển thị thông báo nếu không có kết quả
-                if (visibleRows === 0) {
+                if (visibleRows === 0 && totalRecords > 0) {
                     if ($('#staffTable tbody tr.no-result').length === 0) {
-                        $('#staffTable tbody').append('<tr class="no-result"><td colspan="7" class="text-center">Không tìm thấy kết quả phù hợp</td></tr>');
+                        $('#staffTable tbody').append('<tr class="no-result"><td colspan="7" class="text-center py-4"><div class="text-muted"><i class="fas fa-search me-2"></i>Không tìm thấy kết quả phù hợp</div></td></tr>');
                     }
                 } else {
                     $('#staffTable tbody tr.no-result').remove();
                 }
             }
+
+            // Khởi tạo tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Xác nhận thay đổi trạng thái
+            $('[data-confirm]').on('click', function(e) {
+                if (!confirm($(this).data('confirm'))) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
         });
     </script>
 </th:block>

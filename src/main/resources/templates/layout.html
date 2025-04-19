@@ -3,31 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Định nghĩa fragment title đúng cách -->
     <th:block th:fragment="title(title)">
         <title th:replace="${title}">Hệ thống Quản lý Nhân viên FPT</title>
     </th:block>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}">
+
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/6.4.2/css/all.min.css}">
+
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
-    <!-- CSS thêm vào từ các trang con -->
     <th:block th:replace="${css} ?: ~{}"></th:block>
 </head>
-<body>
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container-fluid">
-        <a class="navbar-brand" th:href="@{/}">
-            <i class="fas fa-users-cog"></i> Quản lý Nhân viên FPT
+<body class="bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+            <i class="fas fa-users-cog me-2"></i> Quản lý Nhân viên FPT
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/staff}" th:classappend="${#httpServletRequest.getRequestURI().startsWith('/staff') ? 'active' : ''}">
                         <i class="fas fa-user"></i> Nhân viên
@@ -42,48 +41,38 @@
         </div>
     </div>
 </nav>
-
-<!-- Main Content -->
-<!-- Main Content -->
-<div class="container mt-4">
-    <!-- Hiển thị thông báo thành công -->
+<div class="container my-4 py-3 bg-white rounded shadow">
     <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <span th:text="${param.success}">Thao tác thành công!</span>
+        <i class="fas fa-check-circle me-2"></i><span th:text="${param.success}">Thao tác thành công!</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-
-    <!-- Hiển thị thông báo lỗi -->
     <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <span th:text="${param.error}">Đã xảy ra lỗi!</span>
+        <i class="fas fa-exclamation-circle me-2"></i><span th:text="${param.error}">Đã xảy ra lỗi!</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-
-    <!-- Thông báo flash -->
     <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <span th:text="${success}">Thao tác thành công!</span>
+        <i class="fas fa-check-circle me-2"></i><span th:text="${success}">Thao tác thành công!</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
     <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <span th:text="${error}">Đã xảy ra lỗi!</span>
+        <i class="fas fa-exclamation-circle me-2"></i><span th:text="${error}">Đã xảy ra lỗi!</span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-
-    <!-- Định nghĩa fragment content đúng cách -->
     <th:block th:fragment="content(content)">
         <th:block th:replace="${content}"></th:block>
     </th:block>
 </div>
-<!-- Footer -->
-<footer class="bg-light text-center text-muted py-3 mt-5">
+<footer class="bg-dark text-white text-center py-3 mt-5">
     <div class="container">
         <p class="mb-0">&copy; 2025 FPT Education. Hệ thống Quản lý Nhân viên</p>
     </div>
 </footer>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Định nghĩa fragment js đúng cách -->
+<script th:src="@{/webjars/jquery/3.7.1/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.11.7/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+
 <th:block th:fragment="js(js)">
     <th:block th:replace="${js} ?: ~{}"></th:block>
 </th:block>

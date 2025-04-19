@@ -9,62 +9,41 @@
 <th:block th:replace="~{layout :: content(~{::main})}">
     <main>
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Import/Export Dữ liệu</h2>
+            <h2 class="display-6"><i class="fas fa-exchange-alt text-primary me-2"></i> Import/Export Dữ liệu</h2>
         </div>
 
-        <div class="row">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
             <!-- Import nhân viên -->
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Import nhân viên</h5>
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0"><i class="fas fa-file-import me-2"></i> Import nhân viên</h5>
                     </div>
-                    <div class="card-body">
-                        <p>Nhập dữ liệu nhân viên từ file Excel</p>
-                        <p>Tính năng này cho phép bạn import thông tin nhân viên hàng loạt từ file Excel với định dạng được cung cấp.</p>
-
-                        <div class="d-grid gap-2 mt-4">
-                            <a th:href="@{/import-export/import}" class="btn btn-primary">
-                                <i class="fas fa-file-import"></i> Import nhân viên
+                    <div class="card-body d-flex flex-column">
+                        <div class="mb-4">
+                        </div>
+                        <div class="mt-auto">
+                            <a th:href="@{/import-export/import}" class="btn btn-primary w-100">
+                                <i class="fas fa-file-import me-2"></i> Import nhân viên
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Download template -->
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-header bg-success text-white">
-                        <h5 class="mb-0">Download template</h5>
-                    </div>
-                    <div class="card-body">
-                        <p>Tải xuống template Excel để nhập dữ liệu nhân viên</p>
-                        <p>Để import dữ liệu thành công, vui lòng sử dụng file template chính xác.
-                            Template bao gồm các trường thông tin cần thiết và ví dụ mẫu.</p>
-
-                        <div class="d-grid gap-2 mt-4">
-                            <a th:href="@{/import-export/template}" class="btn btn-success">
-                                <i class="fas fa-file-download"></i> Tải template
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Export nhân viên -->
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-header bg-warning text-dark">
-                        <h5 class="mb-0"><i class="fas fa-file-export"></i> Export dữ liệu nhân viên</h5>
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-warning text-dark py-3">
+                        <h5 class="mb-0"><i class="fas fa-file-export me-2"></i> Export dữ liệu nhân viên</h5>
                     </div>
-                    <div class="card-body">
-                        <p>Xuất dữ liệu nhân viên ra file Excel</p>
-                        <p>Tải xuống danh sách tất cả nhân viên hiện có trong hệ thống dưới dạng file Excel.</p>
-
-                        <div class="d-grid gap-2 mt-4">
-                            <a th:href="@{/import-export/export}" class="btn btn-warning">
-                                <i class="fas fa-file-export"></i> Export nhân viên
+                    <div class="card-body d-flex flex-column">
+                        <div class="mb-4">
+                        </div>
+                        <div class="mt-auto">
+                            <a th:href="@{/import-export/export}" class="btn btn-warning w-100">
+                                <i class="fas fa-file-export me-2"></i> Export nhân viên
                             </a>
                         </div>
                     </div>
@@ -72,18 +51,17 @@
             </div>
 
             <!-- Lịch sử import -->
-            <div class="col-md-6 mb-4">
-                <div class="card h-100">
-                    <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">Lịch sử import</h5>
+            <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-header bg-info text-white py-3">
+                        <h5 class="mb-0"><i class="fas fa-history me-2"></i> Lịch sử import</h5>
                     </div>
-                    <div class="card-body">
-                        <p>Xem lịch sử các lần import dữ liệu</p>
-                        <p>Kiểm tra kết quả của các lần import trước đó, bao gồm thông tin về các bản ghi thành công và thất bại.</p>
-
-                        <div class="d-grid gap-2 mt-4">
-                            <a th:href="@{/import-export/history}" class="btn btn-info">
-                                <i class="fas fa-history"></i> Xem lịch sử
+                    <div class="card-body d-flex flex-column">
+                        <div class="mb-4">
+                        </div>
+                        <div class="mt-auto">
+                            <a th:href="@{/import-export/history}" class="btn btn-info w-100">
+                                <i class="fas fa-history me-2"></i> Xem lịch sử
                             </a>
                         </div>
                     </div>

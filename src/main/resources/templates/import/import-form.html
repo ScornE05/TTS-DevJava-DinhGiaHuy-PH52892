@@ -9,60 +9,124 @@
 <th:block th:replace="~{layout :: content(~{::main})}">
     <main>
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Import nhân viên</h2>
+            <h2 class="display-6"><i class="fas fa-file-import text-primary me-2"></i> Import nhân viên</h2>
             <a th:href="@{/import-export}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Quay lại
+                <i class="fas fa-arrow-left me-2"></i> Quay lại
             </a>
         </div>
 
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Upload file Excel</h5>
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0"><i class="fas fa-upload me-2"></i> Upload file Excel</h5>
             </div>
             <div class="card-body">
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i> Vui lòng sử dụng file Excel theo đúng định dạng template.
-                    Nếu chưa có template, bạn có thể
-                    <a th:href="@{/import-export/template}" class="alert-link">tải xuống ở đây</a>.
+                <div class="alert alert-info d-flex align-items-center" role="alert">
+                    <i class="fas fa-info-circle fs-4 me-3"></i>
+                    <div>
+                        Vui lòng sử dụng file Excel theo đúng định dạng template.
+                        Nếu chưa có template, bạn có thể
+                        <a th:href="@{/import-export/template}" class="alert-link">tải xuống ở đây</a>.
+                    </div>
                 </div>
 
-                <form th:action="@{/import-export/import}" method="post" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="file" class="form-label required-field">Chọn file Excel</label>
-                        <input type="file" class="form-control" id="file" name="file" required
+                <form th:action="@{/import-export/import}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <div class="mb-4">
+                        <label for="file" class="form-label required-field fw-bold">Chọn file Excel</label>
+                        <input type="file" class="form-control form-control-lg" id="file" name="file" required
                                accept=".xlsx,.xls">
-                        <div class="form-text">Chỉ chấp nhận file Excel (.xlsx, .xls)</div>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i> Chỉ chấp nhận file Excel (.xlsx, .xls) với kích thước tối đa 10MB
+                        </div>
+                        <div class="invalid-feedback">
+                            Vui lòng chọn file Excel
+                        </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-upload"></i> Upload và Import
-                    </button>
+                    <div class="d-grid gap-2 d-md-flex">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-upload me-2"></i> Upload và Import
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary btn-lg">
+                            <i class="fas fa-undo me-2"></i> Làm mới
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
 
-        <div class="card mt-4">
-            <div class="card-header bg-warning text-dark">
-                <h5 class="mb-0">Lưu ý khi import</h5>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-warning text-dark py-3">
+                <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i> Lưu ý khi import</h5>
             </div>
             <div class="card-body">
-                <ul>
-                    <li>Email FPT phải kết thúc bằng đuôi <strong>@fpt.edu.vn</strong></li>
-                    <li>Email FE phải kết thúc bằng đuôi <strong>@fe.edu.vn</strong></li>
-                    <li>Mã nhân viên, email FPT và email FE không được trùng với dữ liệu đã có</li>
-                    <li>Tất cả trường bắt buộc phải nhập đầy đủ</li>
-                    <li>Độ dài thông tin nằm trong giới hạn:</li>
-                    <ul>
-                        <li>Mã nhân viên: tối đa 15 ký tự</li>
-                        <li>Họ tên: tối đa 100 ký tự</li>
-                        <li>Email: tối đa 100 ký tự</li>
-                    </ul>
-                    <li>Email không được chứa khoảng trắng và không có tiếng Việt</li>
-                    <li>Email FPT và email FE phải chứa mã nhân viên</li>
-                </ul>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold mb-3"><i class="fas fa-check-circle text-success me-2"></i> Định dạng email</h6>
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item bg-transparent"><i class="fas fa-angle-right text-primary me-2"></i> Email FPT phải kết thúc bằng đuôi <span class="badge bg-primary">@fpt.edu.vn</span></li>
+                            <li class="list-group-item bg-transparent"><i class="fas fa-angle-right text-primary me-2"></i> Email FE phải kết thúc bằng đuôi <span class="badge bg-primary">@fe.edu.vn</span></li>
+                            <li class="list-group-item bg-transparent"><i class="fas fa-angle-right text-primary me-2"></i> Email không được chứa khoảng trắng và không có tiếng Việt</li>
+                            <li class="list-group-item bg-transparent"><i class="fas fa-angle-right text-primary me-2"></i> Email FPT và email FE phải chứa mã nhân viên</li>
+                        </ul>
+
+                        <h6 class="fw-bold mb-3"><i class="fas fa-info-circle text-info me-2"></i> Giới hạn độ dài</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-transparent"><i class="fas fa-angle-right text-primary me-2"></i> Mã nhân viên: tối đa <span class="badge bg-secondary">15</span> ký tự</li>
+                            <li class="list-group-item bg-transparent"><i class="fas fa-angle-right text-primary me-2"></i> Họ tên: tối đa <span class="badge bg-secondary">100</span> ký tự</li>
+                            <li class="list-group-item bg-transparent"><i class="fas fa-angle-right text-primary me-2"></i> Email: tối đa <span class="badge bg-secondary">100</span> ký tự</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h6 class="fw-bold mb-3"><i class="fas fa-exclamation-circle text-danger me-2"></i> Yêu cầu chung</h6>
+                        <ul class="list-group list-group-flush mb-4">
+                            <li class="list-group-item bg-transparent"><i class="fas fa-angle-right text-primary me-2"></i> Mã nhân viên, email FPT và email FE không được trùng với dữ liệu đã có</li>
+                            <li class="list-group-item bg-transparent"><i class="fas fa-angle-right text-primary me-2"></i> Tất cả trường bắt buộc phải nhập đầy đủ</li>
+                            <li class="list-group-item bg-transparent"><i class="fas fa-angle-right text-primary me-2"></i> Dữ liệu phải được nhập đúng định dạng</li>
+                        </ul>
+
+                        <h6 class="fw-bold mb-3"><i class="fas fa-clipboard-check text-success me-2"></i> Quy trình import</h6>
+                        <div class="card bg-light">
+                            <div class="card-body p-3">
+                                <ol class="mb-0">
+                                    <li>Tải template mẫu từ hệ thống</li>
+                                    <li>Điền thông tin vào template</li>
+                                    <li>Upload file và tiến hành import</li>
+                                    <li>Kiểm tra kết quả trong phần lịch sử import</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
+</th:block>
+
+<!-- JavaScript để kiểm tra form -->
+<th:block th:replace="~{layout :: js(~{::script})}">
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
 </th:block>
 </body>
 </html>

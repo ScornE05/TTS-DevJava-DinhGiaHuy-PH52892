@@ -58,42 +58,6 @@ public class ImportExportService {
                 sheet.autoSizeColumn(i);
             }
 
-            // Thêm dữ liệu mẫu và tất cả các cơ sở hiện có
-            List<Facility> facilities = facilityRepository.findAllActive();
-            int rowNum = 1;
-
-            for (Facility facility : facilities) {
-                List<Department> departments = departmentRepository.findAllByFacilityId(facility.getId());
-
-                if (!departments.isEmpty()) {
-                    Department department = departments.get(0);
-                    List<Major> majors = majorRepository.findAllByDepartmentIdAndFacilityId(department.getId(), facility.getId());
-
-                    if (!majors.isEmpty()) {
-                        Row exampleRow = sheet.createRow(rowNum++);
-                        exampleRow.createCell(0).setCellValue("NV00" + rowNum);
-                        exampleRow.createCell(1).setCellValue("Nguyễn Văn Mẫu " + rowNum);
-                        exampleRow.createCell(2).setCellValue("nv00" + rowNum + "@fpt.edu.vn");
-                        exampleRow.createCell(3).setCellValue("nv00" + rowNum + "@fe.edu.vn");
-                        exampleRow.createCell(4).setCellValue(facility.getCode());
-                        exampleRow.createCell(5).setCellValue(department.getName());
-                        exampleRow.createCell(6).setCellValue(majors.get(0).getName());
-                    }
-                }
-            }
-
-            // Nếu không có dữ liệu cơ sở, thêm một hàng mẫu mặc định
-            if (rowNum == 1) {
-                Row exampleRow = sheet.createRow(1);
-                exampleRow.createCell(0).setCellValue("NV001");
-                exampleRow.createCell(1).setCellValue("Nguyen Van A");
-                exampleRow.createCell(2).setCellValue("nv001@fpt.edu.vn");
-                exampleRow.createCell(3).setCellValue("nv001@fe.edu.vn");
-                exampleRow.createCell(4).setCellValue("HN");
-                exampleRow.createCell(5).setCellValue("Department One");
-                exampleRow.createCell(6).setCellValue("Major One");
-            }
-
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             workbook.write(outputStream);
             return outputStream.toByteArray();
