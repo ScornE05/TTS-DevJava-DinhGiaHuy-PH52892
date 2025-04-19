@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -34,7 +34,7 @@ public class ImportExportService {
     private final Pattern FPT_EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]+@fpt\\.edu\\.vn$");
     private final Pattern FE_EMAIL_PATTERN = Pattern.compile("^[a-zA-Z0-9._-]+@fe\\.edu\\.vn$");
 
-    public byte[] downloadTemplate(HttpServletResponse response) throws IOException {
+    public byte[] downloadTemplate() throws IOException {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Staff Import Template");
 
@@ -52,6 +52,7 @@ public class ImportExportService {
                 cell.setCellStyle(headerStyle);
                 sheet.autoSizeColumn(i);
             }
+
             Row exampleRow = sheet.createRow(1);
             exampleRow.createCell(0).setCellValue("NV001");
             exampleRow.createCell(1).setCellValue("Nguyen Van A");
@@ -60,11 +61,13 @@ public class ImportExportService {
             exampleRow.createCell(4).setCellValue("HN");
             exampleRow.createCell(5).setCellValue("Department One");
             exampleRow.createCell(6).setCellValue("Major One");
+
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             workbook.write(outputStream);
             return outputStream.toByteArray();
         }
     }
+
 
     @Transactional
     public ImportResponseDTO importStaff(MultipartFile file) throws IOException {

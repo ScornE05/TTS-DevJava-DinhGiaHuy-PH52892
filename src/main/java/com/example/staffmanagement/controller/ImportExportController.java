@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -23,8 +22,8 @@ public class ImportExportController {
     private final ImportExportService importExportService;
 
     @GetMapping("/template")
-    public ResponseEntity<byte[]> downloadTemplate(HttpServletResponse response) throws IOException {
-        byte[] templateBytes = importExportService.downloadTemplate(response);
+    public ResponseEntity<byte[]> downloadTemplate() throws IOException {
+        byte[] templateBytes = importExportService.downloadTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -35,7 +34,7 @@ public class ImportExportController {
 
     @PostMapping("/staff")
     public ResponseEntity<ImportResponseDTO> importStaff(@RequestParam("file") MultipartFile file) throws IOException {
-        return new ResponseEntity<>(importExportService.importStaff(file), HttpStatus.OK);
+        return ResponseEntity.ok(importExportService.importStaff(file));
     }
 
     @GetMapping("/history")

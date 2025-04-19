@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +33,7 @@ public class ImportExportWebController {
     // Tải template
     @GetMapping("/template")
     public ResponseEntity<byte[]> downloadTemplate(HttpServletResponse response) throws IOException {
-        byte[] templateBytes = importExportService.downloadTemplate(response);
+        byte[] templateBytes = importExportService.downloadTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
