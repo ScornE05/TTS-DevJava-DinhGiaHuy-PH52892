@@ -9,7 +9,7 @@
 <th:block th:replace="~{layout :: content(~{::main})}">
     <main>
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Quản lý bộ môn chuyên ngành</h2>
+            <h2><i class="fas fa-book"></i> Quản lý bộ môn chuyên ngành</h2>
             <a th:href="@{/staff}" class="btn btn-secondary">
                 <i class="fas fa-arrow-left"></i> Quay lại danh sách nhân viên
             </a>
@@ -18,17 +18,32 @@
         <!-- Thông tin nhân viên -->
         <div class="card mb-4">
             <div class="card-header bg-info text-white">
-                <h5 class="mb-0">Thông tin nhân viên</h5>
+                <h5 class="mb-0"><i class="fas fa-user-circle"></i> Thông tin nhân viên</h5>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Mã nhân viên:</strong> <span th:text="${staff.staffCode}">ST001</span></p>
-                        <p><strong>Họ tên:</strong> <span th:text="${staff.name}">Nguyễn Văn A</span></p>
+                    <div class="col-md-3">
+                        <div class="text-center mb-3">
+                            <div class="avatar-placeholder bg-light rounded-circle d-flex align-items-center justify-content-center mx-auto" style="width: 100px; height: 100px;">
+                                <i class="fas fa-user fa-3x text-info"></i>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <p><strong>Email FPT:</strong> <span th:text="${staff.accountFpt}">anv@fpt.edu.vn</span></p>
-                        <p><strong>Email FE:</strong> <span th:text="${staff.accountFe}">anv@fe.edu.vn</span></p>
+                    <div class="col-md-9">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>Mã nhân viên:</strong> <span th:text="${staff.staffCode}" class="text-primary">ST001</span></p>
+                                <p><strong>Họ tên:</strong> <span th:text="${staff.name}">Nguyễn Văn A</span></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Email FPT:</strong> <span th:text="${staff.accountFpt}" class="text-secondary">anv@fpt.edu.vn</span></p>
+                                <p><strong>Email FE:</strong> <span th:text="${staff.accountFe}" class="text-secondary">anv@fe.edu.vn</span></p>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <span th:if="${staff.status == 1}" class="badge bg-success">Đang hoạt động</span>
+                            <span th:if="${staff.status == 0}" class="badge bg-danger">Ngừng hoạt động</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -36,13 +51,14 @@
 
         <!-- Bộ môn chuyên ngành hiện tại -->
         <div class="card mb-4">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">Bộ môn chuyên ngành hiện tại</h5>
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-list"></i> Bộ môn chuyên ngành hiện tại</h5>
+                <span class="badge bg-light text-dark" th:text="${specializations.size()} + ' chuyên ngành'">0 chuyên ngành</span>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
-                        <thead>
+                        <thead class="table-light">
                         <tr>
                             <th>#</th>
                             <th>Cơ sở</th>
@@ -77,11 +93,15 @@
         <!-- Thêm bộ môn chuyên ngành mới -->
         <div class="card">
             <div class="card-header bg-success text-white">
-                <h5 class="mb-0">Thêm bộ môn chuyên ngành mới</h5>
+                <h5 class="mb-0"><i class="fas fa-plus-circle"></i> Thêm bộ môn chuyên ngành mới</h5>
             </div>
             <div class="card-body">
-                <form th:action="@{/staff/specialization/add}" method="post" th:object="${specializationDTO}">
+                <form th:action="@{/staff/specialization/add}" method="post" th:object="${specializationDTO}" id="specializationForm">
                     <input type="hidden" th:field="*{staffId}" th:value="${staff.id}">
+
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i> <strong>Lưu ý:</strong> Nhân viên chỉ được phép có một bộ môn và một chuyên ngành trong mỗi cơ sở.
+                    </div>
 
                     <div class="row">
                         <div class="col-md-4 mb-3">
@@ -92,6 +112,9 @@
                                         th:value="${facility.id}"
                                         th:text="${facility.name}">HN</option>
                             </select>
+                            <div id="facilityFeedback" class="invalid-feedback" style="display:none;">
+                                Nhân viên đã có chuyên ngành trong cơ sở này. Vui lòng chọn cơ sở khác.
+                            </div>
                         </div>
 
                         <div class="col-md-4 mb-3">
@@ -109,10 +132,30 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-success" id="btnSubmit" disabled>
-                        <i class="fas fa-plus"></i> Thêm bộ môn chuyên ngành
-                    </button>
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-success" id="btnSubmit" disabled>
+                            <i class="fas fa-plus"></i> Thêm bộ môn chuyên ngành
+                        </button>
+                        <button type="reset" class="btn btn-secondary ms-2" id="btnReset">
+                            <i class="fas fa-undo"></i> Làm mới
+                        </button>
+                    </div>
                 </form>
+            </div>
+        </div>
+
+        <!-- Hướng dẫn -->
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-info-circle"></i> Hướng dẫn</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>Nhân viên chỉ được phép có một bộ môn và một chuyên ngành trong mỗi cơ sở.</li>
+                    <li>Khi chọn cơ sở, hệ thống sẽ tự động lấy danh sách bộ môn thuộc cơ sở đó.</li>
+                    <li>Khi chọn bộ môn, hệ thống sẽ tự động lấy danh sách chuyên ngành thuộc bộ môn đó.</li>
+                    <li>Bạn có thể xóa bộ môn chuyên ngành đã thêm bằng cách nhấn nút "Xóa".</li>
+                </ul>
             </div>
         </div>
     </main>
@@ -122,15 +165,38 @@
 <th:block th:replace="~{layout :: js(~{::script})}">
     <script>
         $(document).ready(function() {
-            // Khi chọn cơ sở, load danh sách bộ môn
+            // Lưu danh sách các chuyên ngành hiện có của nhân viên theo cơ sở
+            const existingFacilities = [];
+            $('table tbody tr').each(function() {
+                const facilityName = $(this).find('td:eq(1)').text();
+                if (facilityName) {
+                    existingFacilities.push(facilityName.trim());
+                }
+            });
+
+            // Khi chọn cơ sở, kiểm tra và load danh sách bộ môn
             $('#facilityId').change(function() {
                 var facilityId = $(this).val();
-                if (facilityId) {
-                    // Reset các select box phụ thuộc
-                    $('#departmentId').empty().append('<option value="">-- Chọn bộ môn --</option>').prop('disabled', true);
-                    $('#majorId').empty().append('<option value="">-- Chọn chuyên ngành --</option>').prop('disabled', true);
-                    $('#btnSubmit').prop('disabled', true);
+                var facilityName = $(this).find('option:selected').text();
 
+                // Reset các select box phụ thuộc
+                $('#departmentId').empty().append('<option value="">-- Chọn bộ môn --</option>').prop('disabled', true);
+                $('#majorId').empty().append('<option value="">-- Chọn chuyên ngành --</option>').prop('disabled', true);
+                $('#btnSubmit').prop('disabled', true);
+
+                // Kiểm tra xem nhân viên đã có chuyên ngành trong cơ sở này chưa
+                const hasSpecializationInFacility = existingFacilities.includes(facilityName.trim());
+
+                if (hasSpecializationInFacility) {
+                    $('#facilityFeedback').show();
+                    $(this).addClass('is-invalid');
+                    return;
+                } else {
+                    $('#facilityFeedback').hide();
+                    $(this).removeClass('is-invalid');
+                }
+
+                if (facilityId) {
                     // Load danh sách bộ môn theo cơ sở
                     $.getJSON('[[@{/departments/facility/}]]' + facilityId, function(data) {
                         if (data && data.length > 0) {
@@ -138,12 +204,10 @@
                                 $('#departmentId').append('<option value="' + department.id + '">' + department.name + '</option>');
                             });
                             $('#departmentId').prop('disabled', false);
+                        } else {
+                            $('#departmentId').append('<option value="">Không có bộ môn</option>');
                         }
                     });
-                } else {
-                    $('#departmentId').empty().append('<option value="">-- Chọn bộ môn --</option>').prop('disabled', true);
-                    $('#majorId').empty().append('<option value="">-- Chọn chuyên ngành --</option>').prop('disabled', true);
-                    $('#btnSubmit').prop('disabled', true);
                 }
             });
 
@@ -164,11 +228,10 @@
                                 $('#majorId').append('<option value="' + major.id + '">' + major.name + '</option>');
                             });
                             $('#majorId').prop('disabled', false);
+                        } else {
+                            $('#majorId').append('<option value="">Không có chuyên ngành</option>');
                         }
                     });
-                } else {
-                    $('#majorId').empty().append('<option value="">-- Chọn chuyên ngành --</option>').prop('disabled', true);
-                    $('#btnSubmit').prop('disabled', true);
                 }
             });
 
@@ -176,6 +239,50 @@
             $('#majorId').change(function() {
                 var majorId = $(this).val();
                 $('#btnSubmit').prop('disabled', !majorId);
+            });
+
+            // Khi nhấn nút reset
+            $('#btnReset').click(function() {
+                $('#facilityId').removeClass('is-invalid');
+                $('#facilityFeedback').hide();
+                $('#departmentId').empty().append('<option value="">-- Chọn bộ môn --</option>').prop('disabled', true);
+                $('#majorId').empty().append('<option value="">-- Chọn chuyên ngành --</option>').prop('disabled', true);
+                $('#btnSubmit').prop('disabled', true);
+            });
+
+            // Kiểm tra form trước khi submit
+            $('#specializationForm').on('submit', function(e) {
+                var facilityId = $('#facilityId').val();
+                var facilityName = $('#facilityId option:selected').text();
+
+                if (!facilityId) {
+                    alert('Vui lòng chọn cơ sở');
+                    e.preventDefault();
+                    return false;
+                }
+
+                const hasSpecializationInFacility = existingFacilities.includes(facilityName.trim());
+                if (hasSpecializationInFacility) {
+                    alert('Nhân viên đã có chuyên ngành trong cơ sở này. Vui lòng chọn cơ sở khác.');
+                    e.preventDefault();
+                    return false;
+                }
+
+                var departmentId = $('#departmentId').val();
+                if (!departmentId) {
+                    alert('Vui lòng chọn bộ môn');
+                    e.preventDefault();
+                    return false;
+                }
+
+                var majorId = $('#majorId').val();
+                if (!majorId) {
+                    alert('Vui lòng chọn chuyên ngành');
+                    e.preventDefault();
+                    return false;
+                }
+
+                return true;
             });
         });
     </script>

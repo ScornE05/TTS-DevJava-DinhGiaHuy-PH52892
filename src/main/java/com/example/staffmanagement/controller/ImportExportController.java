@@ -46,4 +46,14 @@ public class ImportExportController {
     public ResponseEntity<ImportResponseDTO> getImportHistoryById(@PathVariable UUID id) {
         return ResponseEntity.ok(importExportService.getImportHistoryById(id));
     }
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportStaffData() throws IOException {
+        byte[] excelBytes = importExportService.exportStaffData();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "staff_data.xlsx");
+
+        return new ResponseEntity<>(excelBytes, headers, HttpStatus.OK);
+    }
 }

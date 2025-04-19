@@ -9,17 +9,51 @@
 <th:block th:replace="~{layout :: content(~{::main})}">
     <main>
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Danh sách nhân viên</h2>
-            <a th:href="@{/staff/add}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Thêm nhân viên mới
-            </a>
+            <h2><i class="fas fa-users"></i> Danh sách nhân viên</h2>
+            <div>
+                <a th:href="@{/staff/add}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Thêm nhân viên mới
+                </a>
+                <a th:href="@{/import-export}" class="btn btn-success ms-2">
+                    <i class="fas fa-file-import"></i> Import/Export
+                </a>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-filter"></i> Bộ lọc</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-2">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm...">
+                            <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <select class="form-select" id="statusFilter">
+                            <option value="all">Tất cả trạng thái</option>
+                            <option value="active">Đang hoạt động</option>
+                            <option value="inactive">Ngừng hoạt động</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-list"></i> Danh sách nhân viên</h5>
+                <span class="badge bg-light text-dark" id="totalRecords" th:text="${staffList.size()} + ' nhân viên'">0 nhân viên</span>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
+                    <table class="table table-hover" id="staffTable">
+                        <thead class="table-light">
                         <tr>
                             <th>#</th>
                             <th>Mã NV</th>
@@ -46,13 +80,14 @@
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a th:href="@{/staff/edit/{id}(id=${staff.id})}" class="btn btn-primary">
+                                    <a th:href="@{/staff/edit/{id}(id=${staff.id})}" class="btn btn-primary" title="Sửa">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a th:href="@{/staff/toggle/{id}(id=${staff.id})}" class="btn btn-warning">
+                                    <a th:href="@{/staff/toggle/{id}(id=${staff.id})}" class="btn btn-warning" title="Đổi trạng thái"
+                                       onclick="return confirm('Bạn có chắc muốn thay đổi trạng thái nhân viên này?')">
                                         <i class="fas fa-sync-alt"></i>
                                     </a>
-                                    <a th:href="@{/staff/specialization/{id}(id=${staff.id})}" class="btn btn-info">
+                                    <a th:href="@{/staff/specialization/{id}(id=${staff.id})}" class="btn btn-info" title="Quản lý bộ môn chuyên ngành">
                                         <i class="fas fa-book"></i>
                                     </a>
                                 </div>
@@ -64,6 +99,83 @@
             </div>
         </div>
     </main>
+</th:block>
+
+<!-- JavaScript để xử lý lọc và tìm kiếm -->
+<th:block th:replace="~{layout :: js(~{::script})}">
+    <script>
+        $(document).ready(function() {
+            // Biến để lưu tổng số bản ghi
+            var totalRecords = $('#staffTable tbody tr').length;
+            $('#totalRecords').text(totalRecords + ' nhân viên');
+
+            // Xử lý tìm kiếm
+            $('#searchInput').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                filterTable();
+            });
+
+            // Xử lý lọc trạng thái
+            $('#statusFilter').on('change', function() {
+                filterTable();
+            });
+
+            // Xóa tìm kiếm
+            $('#clearSearch').on('click', function() {
+                $('#searchInput').val('');
+                $('#statusFilter').val('all');
+                filterTable();
+            });
+
+            // Hàm lọc bảng
+            function filterTable() {
+                var searchValue = $('#searchInput').val().toLowerCase();
+                var statusFilter = $('#statusFilter').val();
+
+                var visibleRows = 0;
+
+                $('#staffTable tbody tr').each(function() {
+                    var row = $(this);
+                    var staffCode = row.find('td:eq(1)').text().toLowerCase();
+                    var name = row.find('td:eq(2)').text().toLowerCase();
+                    var emailFpt = row.find('td:eq(3)').text().toLowerCase();
+                    var emailFe = row.find('td:eq(4)').text().toLowerCase();
+                    var status = row.find('td:eq(5) span').text().toLowerCase();
+
+                    var matchSearch = staffCode.includes(searchValue) ||
+                        name.includes(searchValue) ||
+                        emailFpt.includes(searchValue) ||
+                        emailFe.includes(searchValue);
+
+                    var matchStatus = true;
+                    if (statusFilter === 'active' && status !== 'hoạt động') {
+                        matchStatus = false;
+                    } else if (statusFilter === 'inactive' && status !== 'không hoạt động') {
+                        matchStatus = false;
+                    }
+
+                    if (matchSearch && matchStatus) {
+                        row.show();
+                        visibleRows++;
+                    } else {
+                        row.hide();
+                    }
+                });
+
+                // Cập nhật số lượng hiển thị
+                $('#totalRecords').text(visibleRows + ' nhân viên');
+
+                // Hiển thị thông báo nếu không có kết quả
+                if (visibleRows === 0) {
+                    if ($('#staffTable tbody tr.no-result').length === 0) {
+                        $('#staffTable tbody').append('<tr class="no-result"><td colspan="7" class="text-center">Không tìm thấy kết quả phù hợp</td></tr>');
+                    }
+                } else {
+                    $('#staffTable tbody tr.no-result').remove();
+                }
+            }
+        });
+    </script>
 </th:block>
 </body>
 </html>

@@ -39,13 +39,13 @@
                     <h6>Tỷ lệ thành công:</h6>
                     <div class="progress" style="height: 25px;">
                         <div class="progress-bar bg-success" role="progressbar"
-                             th:style="'width: ' + ${(history.successfulRecords * 100) / history.totalRecords} + '%'"
-                             th:text="${history.successfulRecords} + ' (' + ${#numbers.formatDecimal((history.successfulRecords * 100) / history.totalRecords, 1, 2)} + '%)'">
+                             th:style="'width: ' + ${(history.successfulRecords * 100) / (history.totalRecords > 0 ? history.totalRecords : 1)} + '%'"
+                             th:text="${history.successfulRecords} + ' (' + ${#numbers.formatDecimal((history.successfulRecords * 100) / (history.totalRecords > 0 ? history.totalRecords : 1), 1, 2)} + '%)'">
                             8 (80%)
                         </div>
                         <div class="progress-bar bg-danger" role="progressbar"
-                             th:style="'width: ' + ${(history.failedRecords * 100) / history.totalRecords} + '%'"
-                             th:text="${history.failedRecords} + ' (' + ${#numbers.formatDecimal((history.failedRecords * 100) / history.totalRecords, 1, 2)} + '%)'">
+                             th:style="'width: ' + ${(history.failedRecords * 100) / (history.totalRecords > 0 ? history.totalRecords : 1)} + '%'"
+                             th:text="${history.failedRecords} + ' (' + ${#numbers.formatDecimal((history.failedRecords * 100) / (history.totalRecords > 0 ? history.totalRecords : 1), 1, 2)} + '%)'">
                             2 (20%)
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                                 <span th:if="${record.success}" class="badge bg-success">Thành công</span>
                                 <span th:unless="${record.success}" class="badge bg-danger">Lỗi</span>
                             </td>
-                            <td th:text="${record.errorMessage}">Email không đúng định dạng</td>
+                            <td th:text="${record.errorMessage != null ? record.errorMessage : ''}">Email không đúng định dạng</td>
                         </tr>
                         </tbody>
                     </table>

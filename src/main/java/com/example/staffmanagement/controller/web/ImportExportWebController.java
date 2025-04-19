@@ -81,4 +81,17 @@ public class ImportExportWebController {
         model.addAttribute("history", historyDetail);
         return "import/detail";
     }
+
+    @GetMapping("/export")
+    public ResponseEntity<byte[]> exportStaffData(HttpServletResponse response) throws IOException {
+        byte[] excelBytes = importExportService.exportStaffData();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentDispositionFormData("attachment", "staff_data.xlsx");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(excelBytes);
+    }
 }

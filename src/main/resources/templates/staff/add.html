@@ -16,6 +16,9 @@
         </div>
 
         <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-user-plus"></i> Nhập thông tin nhân viên</h5>
+            </div>
             <div class="card-body">
                 <form th:action="@{/staff/add}" th:object="${staff}" method="post">
                     <!-- Thông báo lỗi -->
@@ -23,50 +26,85 @@
                         <span th:text="${error}">Đã xảy ra lỗi</span>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="staffCode" class="form-label required-field">Mã nhân viên</label>
-                        <input type="text" class="form-control" id="staffCode" th:field="*{staffCode}"
-                               th:classappend="${#fields.hasErrors('staffCode')} ? 'is-invalid' : ''"
-                               placeholder="Nhập mã nhân viên">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('staffCode')}" th:errors="*{staffCode}">
-                            Mã nhân viên không hợp lệ
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="staffCode" class="form-label required-field">Mã nhân viên</label>
+                            <input type="text" class="form-control" id="staffCode" th:field="*{staffCode}"
+                                   th:classappend="${#fields.hasErrors('staffCode')} ? 'is-invalid' : ''"
+                                   placeholder="Nhập mã nhân viên (tối đa 15 ký tự)">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('staffCode')}" th:errors="*{staffCode}">
+                                Mã nhân viên không hợp lệ
+                            </div>
+                            <div class="form-text">Mã nhân viên không được vượt quá 15 ký tự.</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label required-field">Họ và tên</label>
+                            <input type="text" class="form-control" id="name" th:field="*{name}"
+                                   th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
+                                   placeholder="Nhập họ và tên (tối đa 100 ký tự)">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                                Tên không hợp lệ
+                            </div>
+                            <div class="form-text">Tên nhân viên không được vượt quá 100 ký tự.</div>
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="name" class="form-label required-field">Họ và tên</label>
-                        <input type="text" class="form-control" id="name" th:field="*{name}"
-                               th:classappend="${#fields.hasErrors('name')} ? 'is-invalid' : ''"
-                               placeholder="Nhập họ và tên">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
-                            Tên không hợp lệ
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="accountFpt" class="form-label required-field">Email FPT</label>
+                            <div class="input-group">
+                                <input type="email" class="form-control" id="accountFpt" th:field="*{accountFpt}"
+                                       th:classappend="${#fields.hasErrors('accountFpt')} ? 'is-invalid' : ''"
+                                       placeholder="Nhập email FPT (xxx@fpt.edu.vn)">
+                                <span class="input-group-text">@fpt.edu.vn</span>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('accountFpt')}" th:errors="*{accountFpt}">
+                                    Email FPT không hợp lệ
+                                </div>
+                            </div>
+                            <div class="form-text">Email FPT phải có định dạng xxx@fpt.edu.vn và phải chứa mã nhân viên.</div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="accountFe" class="form-label required-field">Email FE</label>
+                            <div class="input-group">
+                                <input type="email" class="form-control" id="accountFe" th:field="*{accountFe}"
+                                       th:classappend="${#fields.hasErrors('accountFe')} ? 'is-invalid' : ''"
+                                       placeholder="Nhập email FE (xxx@fe.edu.vn)">
+                                <span class="input-group-text">@fe.edu.vn</span>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('accountFe')}" th:errors="*{accountFe}">
+                                    Email FE không hợp lệ
+                                </div>
+                            </div>
+                            <div class="form-text">Email FE phải có định dạng xxx@fe.edu.vn và phải chứa mã nhân viên.</div>
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="accountFpt" class="form-label required-field">Email FPT</label>
-                        <input type="email" class="form-control" id="accountFpt" th:field="*{accountFpt}"
-                               th:classappend="${#fields.hasErrors('accountFpt')} ? 'is-invalid' : ''"
-                               placeholder="Nhập email FPT (xxx@fpt.edu.vn)">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('accountFpt')}" th:errors="*{accountFpt}">
-                            Email FPT không hợp lệ
-                        </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save"></i> Lưu nhân viên
+                        </button>
+                        <a th:href="@{/staff}" class="btn btn-secondary ms-2">
+                            <i class="fas fa-times"></i> Hủy
+                        </a>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="accountFe" class="form-label required-field">Email FE</label>
-                        <input type="email" class="form-control" id="accountFe" th:field="*{accountFe}"
-                               th:classappend="${#fields.hasErrors('accountFe')} ? 'is-invalid' : ''"
-                               placeholder="Nhập email FE (xxx@fe.edu.vn)">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('accountFe')}" th:errors="*{accountFe}">
-                            Email FE không hợp lệ
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-save"></i> Lưu nhân viên
-                    </button>
                 </form>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-info-circle"></i> Hướng dẫn</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <li>Tất cả các trường đánh dấu <span class="text-danger">*</span> là bắt buộc.</li>
+                    <li>Mã nhân viên là duy nhất, không được trùng với mã đã tồn tại.</li>
+                    <li>Email FPT phải kết thúc bằng <strong>@fpt.edu.vn</strong></li>
+                    <li>Email FE phải kết thúc bằng <strong>@fe.edu.vn</strong></li>
+                    <li>Email FPT và Email FE phải chứa mã nhân viên.</li>
+                    <li>Email không được chứa khoảng trắng hoặc ký tự tiếng Việt.</li>
+                </ul>
             </div>
         </div>
     </main>
@@ -79,11 +117,34 @@
             // Tự động tạo email dựa trên mã nhân viên
             $('#staffCode').on('blur', function() {
                 var staffCode = $(this).val().toLowerCase();
-                if (staffCode && !$('#accountFpt').val()) {
-                    $('#accountFpt').val(staffCode + '@fpt.edu.vn');
+                if (staffCode) {
+                    if ($('#accountFpt').val() === '' || !$('#accountFpt').val().includes('@')) {
+                        $('#accountFpt').val(staffCode + '@fpt.edu.vn');
+                    }
+                    if ($('#accountFe').val() === '' || !$('#accountFe').val().includes('@')) {
+                        $('#accountFe').val(staffCode + '@fe.edu.vn');
+                    }
                 }
-                if (staffCode && !$('#accountFe').val()) {
-                    $('#accountFe').val(staffCode + '@fe.edu.vn');
+            });
+
+            // Xử lý input-group cho email
+            $('#accountFpt').on('focus', function() {
+                if ($(this).val().includes('@fpt.edu.vn')) {
+                    $(this).val($(this).val().replace('@fpt.edu.vn', ''));
+                }
+            }).on('blur', function() {
+                if (!$(this).val().includes('@')) {
+                    $(this).val($(this).val() + '@fpt.edu.vn');
+                }
+            });
+
+            $('#accountFe').on('focus', function() {
+                if ($(this).val().includes('@fe.edu.vn')) {
+                    $(this).val($(this).val().replace('@fe.edu.vn', ''));
+                }
+            }).on('blur', function() {
+                if (!$(this).val().includes('@')) {
+                    $(this).val($(this).val() + '@fe.edu.vn');
                 }
             });
         });
